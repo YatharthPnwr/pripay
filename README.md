@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PayIt 🛡️💸
 
-## Getting Started
+**PayIt** is a decentralized, zero-knowledge private payroll platform built on **Solana**. It leverages **MagicBlock's Ephemeral Rollups (TEE)** and the **Loyal Private Transactions SDK** to allow DAOs and businesses to fund a shared payroll vault and distribute salaries with 100% privacy off-chain.
 
-First, run the development server:
+## 🚀 Features
+
+* **Zero-Knowledge Privacy:** Salary amounts, recipient identities, and transfer links are encrypted and processed inside a secure TEE enclave. On-chain observers only see a pooled vault without knowing who received what.
+* **Public Vault, Private Claims:** Employers fund a single transparent vault on the public Solana Devnet. Employees claim their individual slices in complete privacy.
+* **Instant USDC Settlement:** Behind-the-scenes settlement takes seconds. No intermediaries, no banking delays.
+* **Auto-Retry & Resilience:** The `PayIt` architecture robustly handles Ephemeral Rollup (ER) connection drops, safely absorbing timeouts and protecting against SDK re-broadcasts without crashing.
+
+---
+
+## 🛠 Tech Stack
+
+* **Frontend:** Next.js, React, TailwindCSS
+* **Blockchain Layer:** Solana Web3.js, Solana Wallet Adapter
+* **Privacy SDK:** `@loyal-labs/private-transactions`
+* **TEE / Escrow:** MagicBlock Ephemeral Rollups SDK (`@magicblock-labs/ephemeral-rollups-sdk`)
+
+---
+
+## ⚙️ How It Works (The Privacy Model)
+
+To achieve strict privacy on a public blockchain, PayIt utilizes a cryptographic technique called **Delegation**:
+
+1. **Admin Deposits & Delegates:** The Employer deposits a bulk amount of USDC into a Solana smart contract (Deposit PDA). They then "delegate" this account to the MagicBlock TEE (Trusted Execution Environment), granting the off-chain sequencer temporary, exclusive mathematical authority over the funds.
+2. **Private Shuffling (TEE):** Inside the TEE, PayIt executes `transferDeposit` instructions. The TEE securely deducts the exact salary from the Employer's delegated account and credits the Employee's delegated account. Because this occurs inside the hardware enclave, the public Solana network sees absolutely nothing. 
+3. **Employee Claims:** When the Employee is ready to cash out to their standard Phantom wallet, they run an `undelegateDeposit` function. The TEE releases authority of the Employee's personal Vault PDA back to the Solana Mainnet, allowing them to instantly withdraw their private balance directly into their native USDC token associated account (ATA).
+
+---
+
+## 💻 Local Setup & Development
+
+### 1. Requirements
+
+* Node.js v18+
+* A Solana Wallet (e.g., Phantom or Backpack)
+* Some **Solana Devnet SOL** (.05 SOL is plenty for gas fees).
+
+### 2. Installation
+
+Clone the repository and install the required dependencies:
+
+```bash
+npm install
+```
+
+### 3. Environment Variables
+
+In your Next.js environment, the application requires an RPC node to hook into the Solana blockchain.
+
+Create a `.env.local` or `.env` file in the root directory:
+
+```env
+NEXT_PUBLIC_ALCHEMY_API_KEY=your_alchemy_rpc_key_here
+```
+
+### 4. Running the App
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Navigate to `http://localhost:3000` to interact with the PayIt dashboard!
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🏗 Usage Flow
 
-## Learn More
+### For Employers 
+1. Navigate to the **Employer Portal**.
+2. Connect your wallet (Ensure you are on Solana Devnet and have Devnet USDC).
+3. Create a new distribution slip (add Employee public keys and USDC amounts).
+4. Click **Private Distribution**. The app will lock the total pool overhead and shuffle the underlying ownership entirely within the TEE.
+*(Tip: Turn on "Auto-Approve" in your Phantom settings to bypass the multiple L1 setup signatures required by the privacy SDK).*
 
-To learn more about Next.js, take a look at the following resources:
+### For Employees
+1. Navigate to the **Employee Portal**.
+2. Connect your wallet.
+3. The platform will query the off-chain TEE to scan for your private balances.
+4. Click **Claim to Wallet** to initiate the undelegation and finalize the transfer to your standard SPL Token account. (You will need a microscopic amount of SOL gas to pay the network unstaking fee).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ⚠️ Notes for Developers
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* **Already Processed Errors:** During the `transferDeposit` phase, a `Simulation failed: already been processed` error can randomly occur if the TEE sequencer natively re-simulates a sluggish request. We have implemented a rigid `runWithSuppressAlreadyProcessed` asynchronous wrapper across the SDK architecture that gracefully absorbs these false-negative failures contextually without crippling the payroll loop.

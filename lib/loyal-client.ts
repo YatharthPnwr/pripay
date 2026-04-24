@@ -83,7 +83,6 @@ export async function fundAndDistribute(
   adminPublicKey: PublicKey,
   slips: PayrollSlip[]
 ): Promise<void> {
-  console.log("The env variables are", process.env.ALCHEMY_API_KEY);
   const tokenMint = new PublicKey(USDC_MINT_DEVNET);
   const userTokenAccount = getAssociatedTokenAddressSync(tokenMint, adminPublicKey);
   const validator = new PublicKey(ER_VALIDATOR);

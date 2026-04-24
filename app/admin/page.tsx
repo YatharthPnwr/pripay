@@ -32,7 +32,7 @@ export default function AdminDashboard() {
           <ArrowLeftIcon />
           Employer Portal
         </Link>
-        <h1 className="page-title">Admin Dashboard</h1>
+        <h1 className="page-title">Create a payroll</h1>
         <p className="page-subtitle">
           Create and manage private payroll distributions for your DAO.
         </p>

@@ -13,7 +13,7 @@ export default function Home() {
           Private <strong>DAO Payroll.</strong>
         </h1>
         <p className="hero-subtitle">
-          Fund an salary vault publicly. Pay every contributor privately —
+          Fund a salary vault publicly. Pay every contributor privately —
           amounts and recipients stay completely private.
         </p>
         <div className="hero-ctas">
