@@ -1,6 +1,6 @@
-# PayIt 🛡️💸
+# PriPay 🛡️💸
 
-**PayIt** is a decentralized, zero-knowledge private payroll platform built on **Solana**. It leverages **MagicBlock's Ephemeral Rollups (TEE)** and the **Loyal Private Transactions SDK** to allow DAOs and businesses to fund a shared payroll vault and distribute salaries with 100% privacy off-chain.
+**PriPay** is a decentralized, zero-knowledge private payroll platform built on **Solana**. It leverages **MagicBlock's Ephemeral Rollups (TEE)** and the **Loyal Private Transactions SDK** to allow DAOs and businesses to fund a shared payroll vault and distribute salaries with 100% privacy off-chain.
 
 ## 🚀 Features
 
