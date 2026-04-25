@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 
 const WalletMultiButton = dynamic(
@@ -23,8 +24,8 @@ export function Nav() {
 
   return (
     <nav className="nav">
-      <Link href="/" className="nav-logo">
-        <span className="nav-logo-dot" />
+      <Link href="/" className="nav-logo">        
+        <Image src="/icon.png" alt="PriPay" width={38} height={38} style={{ borderRadius: "45%" }} />
         PriPay
       </Link>
       <div className="nav-right">

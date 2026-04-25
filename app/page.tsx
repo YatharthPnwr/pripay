@@ -4,17 +4,23 @@ export default function Home() {
   return (
     <div className="landing-hero page-anim">
       <div className="hero-grid-bg" />
+      <div className="hero-orbs" aria-hidden="true">
+        <div className="hero-orb hero-orb-1" />
+        <div className="hero-orb hero-orb-2" />
+        <div className="hero-orb hero-orb-3" />
+      </div>
       <div className="hero-content">
         <div className="hero-eyebrow">
           <span className="hero-eyebrow-dot" />
           Built on Solana · Powered by Loyal private transactions
         </div>
         <h1 className="hero-title">
-          Private <strong>DAO Payroll.</strong>
+          Private{" "}
+          <span className="hero-title-accent">DAO Payroll.</span>
         </h1>
         <p className="hero-subtitle">
           Fund a salary vault publicly. Pay every contributor privately —
-          amounts and recipients stay completely private.
+          amounts and recipients stay completely hidden.
         </p>
         <div className="hero-ctas">
           <Link href="/admin" className="btn btn-accent btn-lg">
@@ -26,6 +32,22 @@ export default function Home() {
             I&apos;m an Employee
           </Link>
         </div>
+        <div className="hero-stats">
+          <div className="hero-stat">
+            <div className="hero-stat-value">&lt;400ms</div>
+            <div className="hero-stat-label">Settlement speed</div>
+          </div>
+          <div className="hero-stat-divider" />
+          <div className="hero-stat">
+            <div className="hero-stat-value">100%</div>
+            <div className="hero-stat-label">On-chain private</div>
+          </div>
+          <div className="hero-stat-divider" />
+          <div className="hero-stat">
+            <div className="hero-stat-value">USDC</div>
+            <div className="hero-stat-label">Native stablecoin</div>
+          </div>
+        </div>
         <div className="feature-row">
           <div className="feature-cell">
             <div className="feature-cell-icon">
@@ -33,7 +55,7 @@ export default function Home() {
             </div>
             <div className="feature-cell-title">Zero-knowledge Privacy</div>
             <div className="feature-cell-desc">
-              Salary amounts are encrypted inside a TEE — on-chain observers see
+              Salary amounts encrypted inside a TEE — on-chain observers see
               nothing.
             </div>
           </div>
