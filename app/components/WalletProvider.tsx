@@ -10,7 +10,7 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 export function Providers({ children }: { children: React.ReactNode }) {
   const wallets = [
     new PhantomWalletAdapter(),
-    new SolflareWalletAdapter({ network: WalletAdapterNetwork.Devnet }),
+    new SolflareWalletAdapter({ network: WalletAdapterNetwork.Mainnet }),
   ];
   return (
     <ConnectionProvider endpoint={BASE_RPC}>

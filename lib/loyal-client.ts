@@ -4,7 +4,7 @@ import { Connection, PublicKey, SendTransactionError } from "@solana/web3.js";
 import { getAssociatedTokenAddressSync } from "@solana/spl-token";
 import type { WalletLike } from "@loyal-labs/private-transactions";
 import { getAuthToken } from "@magicblock-labs/ephemeral-rollups-sdk";
-import { USDC_MINT_DEVNET, BASE_RPC, BASE_WS, EPHEMERAL_RPC, EPHEMERAL_WS, ER_VALIDATOR, MAGIC_PROGRAM_ID, MAGIC_CONTEXT_ID } from "./constants";
+import { USDC_MINT_MAINNET, BASE_RPC, BASE_WS, EPHEMERAL_RPC, EPHEMERAL_WS, ER_VALIDATOR, MAGIC_PROGRAM_ID, MAGIC_CONTEXT_ID } from "./constants";
 import { PayrollSlip } from "./types";
 
 const DELEGATION_PROGRAM_ID = new PublicKey("DELeGGvXpWV2fqJUhqcF5ZSYMS4JTLjteaAMARRSaeSh");
@@ -83,7 +83,7 @@ export async function fundAndDistribute(
   adminPublicKey: PublicKey,
   slips: PayrollSlip[]
 ): Promise<void> {
-  const tokenMint = new PublicKey(USDC_MINT_DEVNET);
+  const tokenMint = new PublicKey(USDC_MINT_MAINNET);
   const userTokenAccount = getAssociatedTokenAddressSync(tokenMint, adminPublicKey);
   const validator = new PublicKey(ER_VALIDATOR);
   const magicProgram = new PublicKey(MAGIC_PROGRAM_ID);
@@ -207,7 +207,7 @@ export async function getPrivateBalance(
   client: LoyalPrivateTransactionsClient,
   employeePublicKey: PublicKey
 ): Promise<bigint> {
-  const tokenMint = new PublicKey(USDC_MINT_DEVNET);
+  const tokenMint = new PublicKey(USDC_MINT_MAINNET);
   const deposit = await client.getEphemeralDeposit(employeePublicKey, tokenMint);
   console.log("[DEBUG] getEphemeralDeposit for", employeePublicKey.toString(), "→", deposit);
   return deposit?.amount ?? 0n;
@@ -219,7 +219,7 @@ export async function claimSalary(
   employeePublicKey: PublicKey,
   amount: bigint
 ): Promise<void> {
-  const tokenMint = new PublicKey(USDC_MINT_DEVNET);
+  const tokenMint = new PublicKey(USDC_MINT_MAINNET);
   const userTokenAccount = getAssociatedTokenAddressSync(tokenMint, employeePublicKey);
   const magicProgram = new PublicKey(MAGIC_PROGRAM_ID);
   const magicContext = new PublicKey(MAGIC_CONTEXT_ID);
