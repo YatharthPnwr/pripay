@@ -84,7 +84,3 @@ Navigate to `http://localhost:3000` to interact with the PayIt dashboard!
 4. Click **Claim to Wallet** to initiate the undelegation and finalize the transfer to your standard SPL Token account. (You will need a microscopic amount of SOL gas to pay the network unstaking fee).
 
 ---
-
-## ⚠️ Notes for Developers
-
-* **Already Processed Errors:** During the `transferDeposit` phase, a `Simulation failed: already been processed` error can randomly occur if the TEE sequencer natively re-simulates a sluggish request. We have implemented a rigid `runWithSuppressAlreadyProcessed` asynchronous wrapper across the SDK architecture that gracefully absorbs these false-negative failures contextually without crippling the payroll loop.
