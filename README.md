@@ -7,7 +7,7 @@
 * **Zero-Knowledge Privacy:** Salary amounts, recipient identities, and transfer links are encrypted and processed inside a secure TEE enclave. On-chain observers only see a pooled vault without knowing who received what.
 * **Public Vault, Private Claims:** Employers fund a single transparent vault on the public Solana Devnet. Employees claim their individual slices in complete privacy.
 * **Instant USDC Settlement:** Behind-the-scenes settlement takes seconds. No intermediaries, no banking delays.
-* **Auto-Retry & Resilience:** The `PayIt` architecture robustly handles Ephemeral Rollup (ER) connection drops, safely absorbing timeouts and protecting against SDK re-broadcasts without crashing.
+* **Auto-Retry & Resilience:** The `PriPay` architecture robustly handles Ephemeral Rollup (ER) connection drops, safely absorbing timeouts and protecting against SDK re-broadcasts without crashing.
 
 ---
 
@@ -75,8 +75,7 @@ Navigate to `http://localhost:3000` to interact with the PayIt dashboard!
 2. Connect your wallet (Ensure you are on Solana Devnet and have Devnet USDC).
 3. Create a new distribution slip (add Employee public keys and USDC amounts).
 4. Click **Private Distribution**. The app will lock the total pool overhead and shuffle the underlying ownership entirely within the TEE.
-*(Tip: Turn on "Auto-Approve" in your Phantom settings to bypass the multiple L1 setup signatures required by the privacy SDK).*
-
+   
 ### For Employees
 1. Navigate to the **Employee Portal**.
 2. Connect your wallet.
