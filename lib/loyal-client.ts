@@ -40,6 +40,7 @@ import {
   MAGIC_CONTEXT_ID,
 } from "./constants";
 import { PayrollSlip } from "./types";
+import { totalBaseUnits } from "./payroll";
 
 const KLEND_PROGRAM_ID = new PublicKey("KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD");
 
@@ -172,7 +173,7 @@ export async function fundAndDistribute(
   const magicProgram = new PublicKey(MAGIC_PROGRAM_ID);
   const magicContext = new PublicKey(MAGIC_CONTEXT_ID);
   const connection = new Connection(BASE_RPC, { wsEndpoint: BASE_WS });
-  const total = BigInt(slips.reduce((sum, s) => sum + s.amount, 0));
+  const total = BigInt(totalBaseUnits(slips));
   const recipients = slips.map(s => new PublicKey(s.recipientWallet));
   const [adminDepositPda] = findDepositPda(adminPublicKey, tokenMint);
 

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { buildClient, getPrivateBalance, claimSalary } from "../../lib/loyal-client";
+import { baseUnitsToUsdc } from "../../lib/payroll";
 import dynamic from "next/dynamic";
 
 const WalletMultiButton = dynamic(
@@ -88,7 +89,7 @@ export function ClaimSalary() {
     );
   }
 
-  const balanceUSDC = balance !== null ? Number(balance) / 1_000_000 : null;
+  const balanceUSDC = balance !== null ? baseUnitsToUsdc(balance) : null;
 
   return (
     <>
