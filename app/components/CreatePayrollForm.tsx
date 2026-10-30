@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
-import { Payroll, PayrollSlip } from "../../lib/types";
 import { savePayroll } from "../../lib/payroll-store";
+import { canSavePayroll, createPayroll, SlipDraft } from "../../lib/payroll";
 import { useWallet } from "@solana/wallet-adapter-react";
 
 export function CreatePayrollForm({ onSaved }: { onSaved: () => void }) {
   const { publicKey } = useWallet();
   const [name, setName] = useState("");
-  const [slips, setSlips] = useState<Omit<PayrollSlip, "id" | "distributed">[]>([
+  const [slips, setSlips] = useState<SlipDraft[]>([
     { recipientWallet: "", label: "", amount: 0 },
   ]);
 
@@ -30,28 +30,14 @@ export function CreatePayrollForm({ onSaved }: { onSaved: () => void }) {
 
   const handleSave = () => {
     if (!publicKey) return;
-    const newPayroll: Payroll = {
-      id: crypto.randomUUID(),
-      name: name || "Unnamed Payroll",
-      adminWallet: publicKey.toBase58(),
-      status: "unfunded",
-      createdAt: new Date().toISOString(),
-      slips: slips.map((s) => ({
-        ...s,
-        id: crypto.randomUUID(),
-        amount: Number(s.amount) * 1_000_000,
-        distributed: false,
-      })),
-    };
-    savePayroll(newPayroll);
+    savePayroll(createPayroll(name, publicKey.toBase58(), slips));
     onSaved();
     setName("");
     setSlips([{ recipientWallet: "", label: "", amount: 0 }]);
   };
 
   const total = slips.reduce((sum, s) => sum + (Number(s.amount) || 0), 0);
-  const canSave =
-    !!publicKey && !!name && slips.every((s) => s.recipientWallet && s.amount);
+  const canSave = !!publicKey && canSavePayroll(name, slips);
 
   return (
     <div className="card">

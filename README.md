@@ -1,5 +1,7 @@
 # PriPay 🛡️💸
 
+[![CI](https://github.com/YatharthPnwr/pripay/actions/workflows/ci.yml/badge.svg)](https://github.com/YatharthPnwr/pripay/actions/workflows/ci.yml)
+
 **PriPay** is a decentralized, zero-knowledge private payroll platform built on **Solana**. It leverages **MagicBlock's Ephemeral Rollups (TEE)** and the **Loyal Private Transactions SDK** to allow DAOs and businesses to fund a shared payroll vault and distribute salaries with 100% privacy off-chain.
 
 ## 🚀 Features
@@ -65,6 +67,29 @@ npm run dev
 ```
 
 Navigate to `http://localhost:3000` to interact with the PayIt dashboard!
+
+---
+
+## 🧪 Tests & CI
+
+Unit tests use [Vitest](https://vitest.dev) and cover the payroll logic in `lib/`: USDC amount conversion, form validation, and the local payroll store.
+
+```bash
+npm test            # unit tests
+npm run lint        # ESLint
+npm run typecheck   # TypeScript
+npm run build       # production build
+```
+
+GitHub Actions (`.github/workflows/ci.yml`) runs on every pull request and every push to `main`:
+
+```
+            ┌─ Lint ──────────┐
+push / PR ──┼─ Type check ────┼──▶ Production build
+            └─ Unit tests ────┘
+```
+
+Lint, type check and unit tests run in parallel; the production build only runs if all three pass. A red check means the change is not safe to merge.
 
 ---
 

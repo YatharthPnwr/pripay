@@ -4,6 +4,7 @@ import { Payroll } from "../../lib/types";
 import { buildClient, fundAndDistribute } from "../../lib/loyal-client";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { markSlipDistributed } from "../../lib/payroll-store";
+import { baseUnitsToUsdc, isPayrollDistributed, totalBaseUnits } from "../../lib/payroll";
 
 export function FundAndDistribute({
   payroll,
@@ -45,9 +46,8 @@ export function FundAndDistribute({
     }
   };
 
-  const isDistributed = payroll.slips.every((s) => s.distributed);
-  const totalAmount =
-    payroll.slips.reduce((sum, s) => sum + s.amount, 0) / 1_000_000;
+  const isDistributed = isPayrollDistributed(payroll);
+  const totalAmount = baseUnitsToUsdc(totalBaseUnits(payroll.slips));
   const date = new Date(payroll.createdAt).toLocaleDateString(undefined, {
     month: "short",
     day: "numeric",
