@@ -17,7 +17,7 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PriPay — Private DAO Payroll",
+  title: "PriPay — Private DAO Payroll...",
   description:
     "Fund an org-wide vault publicly. Pay every contributor individually — amounts and recipients stay completely private.",
 };
